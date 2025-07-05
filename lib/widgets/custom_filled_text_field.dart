@@ -46,7 +46,7 @@ class _CustomFilledTextFieldState extends State<CustomFilledTextField> {
       clipBehavior: Clip.antiAliasWithSaveLayer,
       margin: const EdgeInsets.all(0),
       color: Colors.red,
-      shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(5)),
+      shape: ContinuousRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Transform.scale(
         scale: 1.01,
         child: TextFormField(

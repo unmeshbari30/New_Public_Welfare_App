@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:mime/mime.dart';
+import 'package:rajesh_dada_padvi/models/Files/files_response_model.dart';
 import 'package:rajesh_dada_padvi/models/complaint_payload_model.dart';
 import 'package:rajesh_dada_padvi/models/complaint_response_model.dart';
 import 'package:rajesh_dada_padvi/models/login_payload_model.dart';
@@ -218,8 +219,135 @@ Future<ComplaintPayloadModel?>? saveComplaint({
     }
     throw Exception("Failed to fetch complaints");
   }
+
+  Future<FileResponseModel?> getAchievements() async {
+  try {
+    final response = await dio.get("/api/v1/achievements");
+
+    if (response.statusCode == 200) {
+      final data = response.data;
+      final result = FileResponseModel.fromJson(data);
+      return result;
+    } else {
+      print("Server responded with status: ${response.statusCode}");
+    }
+
+    if (response.statusCode == 400) {
+      final data = response.data;
+      final result = FileResponseModel.fromJson(data);
+      return result;
+    }
+
+  } on DioException catch (e) {
+    print("Dio error: ${e.message}");
+    if (e.response != null) {
+      print("Response data: ${e.response?.data}");
+      print("Status code: ${e.response?.statusCode}");
+    }
+  } catch (e) {
+    print("Unexpected error: $e");
+  }
+
+  // If everything fails, return null instead of throwing exception
+  return null;
+}
+
+
+  Future<FileResponseModel?> getGalleryData() async {
+  try {
+    final response = await dio.get("/api/v1/gallery");
+
+    if (response.statusCode == 200) {
+      final data = response.data;
+      final result = FileResponseModel.fromJson(data);
+      return result;
+    } else {
+      print("Server responded with status: ${response.statusCode}");
+    }
+
+    if (response.statusCode == 400) {
+      final data = response.data;
+      final result = FileResponseModel.fromJson(data);
+      return result;
+    }
+
+  } on DioException catch (e) {
+    print("Dio error: ${e.message}");
+    if (e.response != null) {
+      print("Response data: ${e.response?.data}");
+      print("Status code: ${e.response?.statusCode}");
+    }
+  } catch (e) {
+    print("Unexpected error: $e");
+  }
+
+  // If everything fails, return null instead of throwing exception
+  return null;
+}
   
+  Future<FileResponseModel?> getWomenEmpowermentData() async {
+  try {
+    final response = await dio.get("/api/v1/womens");
+
+    if (response.statusCode == 200) {
+      final data = response.data;
+      final result = FileResponseModel.fromJson(data);
+      return result;
+    } else {
+      print("Server responded with status: ${response.statusCode}");
+    }
+
+    if (response.statusCode == 400) {
+      final data = response.data;
+      final result = FileResponseModel.fromJson(data);
+      return result;
+    }
+
+  } on DioException catch (e) {
+    print("Dio error: ${e.message}");
+    if (e.response != null) {
+      print("Response data: ${e.response?.data}");
+      print("Status code: ${e.response?.statusCode}");
+    }
+  } catch (e) {
+    print("Unexpected error: $e");
+  }
+
+  // If everything fails, return null instead of throwing exception
+  return null;
+}
   
+  Future<FileResponseModel?> getHomePageData() async {
+  try {
+    final response = await dio.get("/api/v1/home");
+
+    if (response.statusCode == 200) {
+      final data = response.data;
+      final result = FileResponseModel.fromJson(data);
+      return result;
+    } else {
+      print("Server responded with status: ${response.statusCode}");
+    }
+
+    if (response.statusCode == 400) {
+      final data = response.data;
+      final result = FileResponseModel.fromJson(data);
+      return result;
+    }
+
+  } on DioException catch (e) {
+    print("Dio error: ${e.message}");
+    if (e.response != null) {
+      print("Response data: ${e.response?.data}");
+      print("Status code: ${e.response?.statusCode}");
+    }
+  } catch (e) {
+    print("Unexpected error: $e");
+  }
+
+  // If everything fails, return null instead of throwing exception
+  return null;
+}
   
   
   Repository({
