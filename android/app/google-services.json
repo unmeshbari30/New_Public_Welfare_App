@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "555196377703",
+    "project_id": "rajesh-dada-padvi",
+    "storage_bucket": "rajesh-dada-padvi.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:555196377703:android:385c5698771ba78bb3c2c2",
+        "android_client_info": {
+          "package_name": "com.example.rajesh_dada_padvi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVdf_xJTNpj2UCs6eL0STL3MZnOqGysjw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
