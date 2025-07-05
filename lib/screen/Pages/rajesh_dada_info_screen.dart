@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rajesh_dada_padvi/controllers/home_controller.dart';
+import 'package:rajesh_dada_padvi/controllers/Screens/rajesh_info_controller.dart';
 
 class RajeshDadaInfoScreen extends ConsumerStatefulWidget {
   const RajeshDadaInfoScreen({super.key});
@@ -11,7 +11,7 @@ class RajeshDadaInfoScreen extends ConsumerStatefulWidget {
 }
 
 class _RajeshDadaInfoScreenState extends ConsumerState<RajeshDadaInfoScreen> {
-  Widget getScaffold(HomeState state) {
+  Widget getScaffold(RajeshInfoState state) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -22,16 +22,6 @@ class _RajeshDadaInfoScreenState extends ConsumerState<RajeshDadaInfoScreen> {
           child: SingleChildScrollView(
         child: Column(
           children: [
-            // Padding(
-            //   padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-            //   child: Card(
-            //       elevation: 2,
-            //       child: ClipRRect(
-            //           borderRadius: BorderRadius.circular(12),
-            //           // child: Image.asset('lib/assets/Rajesh_Dada.jpg'))),
-            //           child:
-            //               Image.asset("lib/assets/rajesh_dada_info_img.jpeg"))),
-            // ),
 
             Padding(
               padding: const EdgeInsets.fromLTRB(5, 10, 10, 10),
@@ -94,8 +84,8 @@ class _RajeshDadaInfoScreenState extends ConsumerState<RajeshDadaInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var homeStateAsync = ref.watch(homeControllerProvider);
-    return homeStateAsync.when(
+    var rajeshInfoStateAsync = ref.watch(rajeshInfoControllerProvider);
+    return rajeshInfoStateAsync.when(
         data: (state) {
           return getScaffold(state);
         },

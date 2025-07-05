@@ -22,105 +22,318 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   bool rememberMe = false;
   bool passwordVisible = true;
   int exitCounter = 1;
+  bool _submitted = false; // boolean for validate password field only when pressed loged in
+
+
+  // Widget getScaffold(AuthenticationState state) {
+  //   return Scaffold(
+  //     appBar: AppBar(
+  //       centerTitle: true,
+  //       automaticallyImplyLeading: false,
+  //       title: Text("Welcome"),
+  //     ),
+  //     body: PopScope(
+  //       canPop: false,
+  //       onPopInvokedWithResult: (didPop, result) {
+  //         if (exitCounter == 2) {
+  //           exit(0);
+  //         }
+  //         exitCounter++;
+  //         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //           content: Text(
+  //             "Press back again to exit",
+  //             style: TextStyle(color: Colors.black),
+  //           ),
+  //           duration: Duration(seconds: 2),
+  //           backgroundColor: Colors.amber,
+  //         ));
+  //       },
+  //       child: SafeArea(
+  //         child: Stack(
+  //           children: [
+  //             SingleChildScrollView(
+  //               child: Form(
+  //                 autovalidateMode: AutovalidateMode.onUserInteraction,
+  //                 key: formKey,
+  //                 child: Column(
+  //                   children: [
+  //                     Padding(
+  //                       padding: const EdgeInsets.all(0.0),
+  //                       child: Divider(
+  //                         thickness: 1.5,
+  //                         color: Colors.black,
+  //                       ),
+  //                     ),
+  //                     SizedBox(
+  //                       height: 20,
+  //                     ),
+  //                     SizedBox(
+  //                       height: 220,
+  //                       width: 220,
+  //                       child: ClipOval(
+  //                         child: Image.asset(
+  //                           "lib/assets/Rajesh_Dada.jpg",
+  //                           fit: BoxFit.cover,
+  //                         ),
+  //                       ),
+  //                     ),
+  //                     SizedBox(
+  //                       height: 10,
+  //                     ),           
+  //                     Padding(
+  //                       padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+  //                       child: CustomFilledTextField(
+  //                         controller: state.userName,
+  //                         labelText: "Mob. No.",
+  //                         keyboardType: TextInputType.number,
+  //                         validator: (value) {
+  //                           if (value == null || value.isEmpty) {
+  //                             return 'Mobile number is required';
+  //                           }
+  //                           if (value.length > 10) {
+  //                             return 'Mobile number cannot exceed 10 digits';
+  //                           }
+  //                           return null;
+  //                         },
+  //                       ),
+  //                     ),            
+  //                     SizedBox(
+  //                       height: 10,
+  //                     ),
+  //                     Padding(
+  //                       padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+  //                       child: CustomFilledTextField(
+  //                         controller: state.password,
+  //                         obscureText: passwordVisible,
+  //                         labelText: "Password",
+  //                         validator: (value) {
+  //                           if (value == null || value.isEmpty) {
+  //                             return 'Please enter your password';
+  //                           }
+  //                           return null;
+  //                         },
+  //                         suffixIcon: IconButton(
+  //                           icon: Icon(
+  //                             passwordVisible
+  //                                 ? Icons.visibility_off
+  //                                 : Icons.visibility,
+  //                             size: 24,
+  //                           ),
+  //                           onPressed: () {
+  //                             setState(
+  //                               () {
+  //                                 passwordVisible = !passwordVisible;
+  //                               },
+  //                             );
+  //                           },
+  //                         ),
+  //                       ),
+  //                     ),
+  //                     SizedBox(height: 10),
+  //                     Row(
+  //                       mainAxisAlignment: MainAxisAlignment.center,
+  //                       children: [
+  //                         Checkbox(
+  //                           value: rememberMe,
+  //                           onChanged: (value) {
+  //                             setState(() {
+  //                               rememberMe = value ?? false;
+  //                             });
+  //                           },
+  //                         ),
+  //                         Text('Remember Me',
+  //                             style:
+  //                                 TextStyle(color: Theme.of(context).primaryColor)),
+  //                       ],
+  //                     ),
+  //                     ElevatedButton(
+  //                       onPressed: () async {
+  //                         if (formKey.currentState!.validate()) {
+  //                           EasyLoading.show();           
+  //                           WidgetsBinding.instance.addPostFrameCallback((_) async {
+  //                             var loginSuccessOrFailed = await ref
+  //                                 .read(authenticationControllerProvider.notifier)
+  //                                 .loginUser();            
+  //                             try {
+  //                               if (loginSuccessOrFailed != null) {
+  //                                 var prefs = await ref
+  //                                     .watch(sharedPreferencesProvider.future);
+  //                                 prefs.setBool(
+  //                                     PrefrencesKeyEnum.rememberMe.key, rememberMe);
+  //                                 prefs.setBool(
+  //                                     PrefrencesKeyEnum.isLoggedin.key, true);            
+  //                                 ScaffoldMessenger.of(context).showSnackBar(
+  //                                   SnackBar(
+  //                                     content: Text(
+  //                                       "Login Successfully",
+  //                                       style: TextStyle(color: Colors.black),
+  //                                     ),
+  //                                     duration: Duration(seconds: 2),
+  //                                     backgroundColor: Colors.green.shade600,
+  //                                   ),
+  //                                 );           
+  //                                 Navigator.push(
+  //                                   context,
+  //                                   MaterialPageRoute(
+  //                                     builder: (context) => HomeScreen(),
+  //                                   ),
+  //                                 );
+  //                               } else {
+  //                                 ScaffoldMessenger.of(context).showSnackBar(
+  //                                   SnackBar(
+  //                                     content: Text(
+  //                                       "Login Failed",
+  //                                       style: TextStyle(color: Colors.black),
+  //                                     ),
+  //                                     duration: Duration(seconds: 2),
+  //                                     backgroundColor: Colors.red.shade600,
+  //                                   ),
+  //                                 );
+  //                               }
+  //                             } catch (e) {
+  //                               ScaffoldMessenger.of(context).showSnackBar(
+  //                                 SnackBar(
+  //                                   content: Text(
+  //                                     loginSuccessOrFailed?.message ??
+  //                                         "Login Failed",
+  //                                     style: TextStyle(color: Colors.black),
+  //                                   ),
+  //                                   duration: Duration(seconds: 2),
+  //                                   backgroundColor: Colors.red.shade600,
+  //                                 ),
+  //                               );
+  //                             }           
+  //                             EasyLoading.dismiss();
+  //                           });
+  //                         }
+  //                       },
+  //                       style: ElevatedButton.styleFrom(
+  //                         backgroundColor: Colors.deepPurple,
+  //                         foregroundColor: Colors.white,
+  //                         shape: RoundedRectangleBorder(
+  //                           borderRadius: BorderRadius.circular(12),
+  //                         ),
+  //                         padding: const EdgeInsets.symmetric(
+  //                             horizontal: 40, vertical: 14),
+  //                       ),
+  //                       child: const Text(
+  //                         "Login",
+  //                         style: TextStyle(
+  //                           fontSize: 16,
+  //                         ),
+  //                       ),
+  //                     ),
+  //                     SizedBox(
+  //                       height: 10,
+  //                     ),
+  //                     TextButton(
+  //                         onPressed: () {
+  //                           Navigator.push(context, MaterialPageRoute(
+  //                             builder: (context) {
+  //                               return SignUpScreen();
+  //                             },
+  //                           ));
+  //                         },
+  //                         child: Text(
+  //                           "New User ?",
+  //                           style: TextStyle(
+  //                               fontSize: 16,
+  //                               color: Theme.of(context).primaryColor),
+  //                         ))
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
+
 
   Widget getScaffold(AuthenticationState state) {
-    return Scaffold(
-      // backgroundColor: Theme.of(context).primaryColor,
-      // backgroundColor: Colors.black,
-      appBar: AppBar(
-        // title: Text("Enter Credential", style: TextStyle(color: Theme.of(context).secondaryHeaderColor ),),
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        title: Text("Welcome"),
-        // backgroundColor: Colors.black,
-      ),
-      body: PopScope(
-        canPop: false,
-        onPopInvokedWithResult: (didPop, result) {
-          if (exitCounter == 2) {
-            exit(0);
-          }
-          exitCounter++;
+  return Scaffold(
+    body: PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (exitCounter == 2) {
+          exit(0);
+        }
+        exitCounter++;
 
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
             content: Text(
               "Press back again to exit",
               style: TextStyle(color: Colors.black),
             ),
             duration: Duration(seconds: 2),
             backgroundColor: Colors.amber,
-          ));
-        },
+          ),
+        );
+      },
+      child: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color.fromARGB(255, 235, 143, 86), Color.fromARGB(255, 236, 105, 34)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
         child: SafeArea(
-          child: Stack(
-            children: [
-              SingleChildScrollView(
-                child: Form(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  key: formKey,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(0.0),
-                        child: Divider(
-                          thickness: 1.5,
-                          color: Colors.black,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      SizedBox(
-                        height: 220,
-                        width: 220,
-                        child: ClipOval(
-                          child: Image.asset(
-                            "lib/assets/Rajesh_Dada.jpg",
-                            fit: BoxFit.cover,
+          child: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Card(
+                elevation: 10,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Form(
+                    // autovalidateMode: AutovalidateMode.onUserInteraction,
+                    autovalidateMode: _submitted
+                  ? AutovalidateMode.always
+                  : AutovalidateMode.disabled,
+                    key: formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text(
+                          "Welcome Back",
+                          style: TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFFE65100) //Colors.deepPurple,
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      // Padding(
-                      //   padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                      //   child: CustomFilledTextField(
-                      //     controller: state.userName,
-                      //     labelText: "Mob. No.",
-                      //     // keyboardType: TextInputType.number,
-                      //     // maxLength: 10,
-                      //     validator: (value) {
-                      //       return Validators.validateMobileNumber(value);
-                      //     },
-                      //     keyboardType: TextInputType.number,
-                      //   ),
-                      // ),
-              
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                        child: CustomFilledTextField(
+                        const SizedBox(height: 10),
+                        const Text(
+                          "Login to your account",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        const SizedBox(height: 30),
+                        CustomFilledTextField(
                           controller: state.userName,
-                          labelText: "Mob. No.",
+                          labelText: "Mobile Number",
                           keyboardType: TextInputType.number,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Mobile number is required';
                             }
-                            if (value.length > 10) {
-                              return 'Mobile number cannot exceed 10 digits';
+                            if (value.length != 10) {
+                              return 'Enter a valid 10-digit number';
                             }
                             return null;
                           },
                         ),
-                      ),
-              
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                        child: CustomFilledTextField(
+                        const SizedBox(height: 16),
+                        CustomFilledTextField(
                           controller: state.password,
                           obscureText: passwordVisible,
                           labelText: "Password",
@@ -138,62 +351,114 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               size: 24,
                             ),
                             onPressed: () {
-                              setState(
-                                () {
-                                  passwordVisible = !passwordVisible;
-                                },
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Checkbox(
-                            value: rememberMe,
-                            onChanged: (value) {
                               setState(() {
-                                rememberMe = value ?? false;
+                                passwordVisible = !passwordVisible;
                               });
                             },
                           ),
-                          Text('Remember Me',
-                              style:
-                                  TextStyle(color: Theme.of(context).primaryColor)),
-                        ],
-                      ),
-                      ElevatedButton(
-                        onPressed: () async {
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: rememberMe,
+                              onChanged: (value) {
+                                setState(() {
+                                  rememberMe = value ?? false;
+                                });
+                              },
+                            ),
+                            Text("Remember Me"),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        ElevatedButton(
+                          // onPressed: () async {
+                          //   if (formKey.currentState!.validate()) {
+                          //     EasyLoading.show();
+                          //     WidgetsBinding.instance
+                          //         .addPostFrameCallback((_) async {
+                          //       var loginSuccessOrFailed = await ref
+                          //           .read(authenticationControllerProvider.notifier)
+                          //           .loginUser();
+                          //       try {
+                          //         if (loginSuccessOrFailed != null) {
+                          //           var prefs = await ref
+                          //               .watch(sharedPreferencesProvider.future);
+                          //           prefs.setBool(
+                          //               PrefrencesKeyEnum.rememberMe.key, rememberMe);
+                          //           prefs.setBool(
+                          //               PrefrencesKeyEnum.isLoggedin.key, true);
+                          //           ScaffoldMessenger.of(context).showSnackBar(
+                          //             SnackBar(
+                          //               content: Text("Login Successfully",
+                          //                   style: TextStyle(color: Colors.black)),
+                          //               duration: Duration(seconds: 2),
+                          //               backgroundColor: Colors.green.shade600,
+                          //             ),
+                          //           );
+                          //           Navigator.push(
+                          //             context,
+                          //             MaterialPageRoute(
+                          //                 builder: (context) => HomeScreen()),
+                          //           );
+                          //         } else {
+                          //           ScaffoldMessenger.of(context).showSnackBar(
+                          //             SnackBar(
+                          //               content: Text("Login Failed",
+                          //                   style: TextStyle(color: Colors.black)),
+                          //               duration: Duration(seconds: 2),
+                          //               backgroundColor: Colors.red.shade600,
+                          //             ),
+                          //           );
+                          //         }
+                          //       } catch (e) {
+                          //         ScaffoldMessenger.of(context).showSnackBar(
+                          //           SnackBar(
+                          //             content: Text(
+                          //                 loginSuccessOrFailed?.message ??
+                          //                     "Login Failed",
+                          //                 style: TextStyle(color: Colors.black)),
+                          //             duration: Duration(seconds: 2),
+                          //             backgroundColor: Colors.red.shade600,
+                          //           ),
+                          //         );
+                          //       }
+                          //       EasyLoading.dismiss();
+                          //     });
+                          //   }
+                          // },
+                          
+                          onPressed: () async {
+                          setState(() {
+                            _submitted = true; // Start validation after login is pressed
+                          });
+
                           if (formKey.currentState!.validate()) {
                             EasyLoading.show();
-              
+
                             WidgetsBinding.instance.addPostFrameCallback((_) async {
                               var loginSuccessOrFailed = await ref
                                   .read(authenticationControllerProvider.notifier)
                                   .loginUser();
-              
+
                               try {
                                 if (loginSuccessOrFailed != null) {
-                                  var prefs = await ref
-                                      .watch(sharedPreferencesProvider.future);
+                                  var prefs = await ref.watch(sharedPreferencesProvider.future);
                                   prefs.setBool(
                                       PrefrencesKeyEnum.rememberMe.key, rememberMe);
                                   prefs.setBool(
                                       PrefrencesKeyEnum.isLoggedin.key, true);
-              
+
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text(
-                                        "Login Successfully",
-                                        style: TextStyle(color: Colors.black),
-                                      ),
+                                      content: Text("Login Successfully",
+                                          style: TextStyle(color: Colors.black)),
                                       duration: Duration(seconds: 2),
                                       backgroundColor: Colors.green.shade600,
                                     ),
                                   );
-              
+
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -203,10 +468,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text(
-                                        "Login Failed",
-                                        style: TextStyle(color: Colors.black),
-                                      ),
+                                      content: Text("Login Failed",
+                                          style: TextStyle(color: Colors.black)),
                                       duration: Duration(seconds: 2),
                                       backgroundColor: Colors.red.shade600,
                                     ),
@@ -216,63 +479,55 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
-                                      loginSuccessOrFailed?.message ??
-                                          "Login Failed",
-                                      style: TextStyle(color: Colors.black),
-                                    ),
+                                        loginSuccessOrFailed?.message ?? "Login Failed",
+                                        style: TextStyle(color: Colors.black)),
                                     duration: Duration(seconds: 2),
                                     backgroundColor: Colors.red.shade600,
                                   ),
                                 );
                               }
-              
+
                               EasyLoading.dismiss();
                             });
                           }
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.deepPurple,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(234, 243, 88, 41), 
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 50, vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 40, vertical: 14),
+                          child: const Text("Login", style: TextStyle(fontSize: 16)),
                         ),
-                        child: const Text(
-                          "Login",
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      TextButton(
+                        const SizedBox(height: 12),
+                        TextButton(
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(
-                              builder: (context) {
-                                return SignUpScreen();
-                              },
-                            ));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignUpScreen()));
                           },
-                          child: Text(
-                            "New User ?",
+                          child: const Text(
+                            "New User? Sign Up",
                             style: TextStyle(
-                                fontSize: 16,
-                                color: Theme.of(context).primaryColor),
-                          ))
-                    ],
+                                fontSize: 16, color:  Color(0xFFE65100),),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ],
+            ),
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   @override
   Widget build(BuildContext context) {

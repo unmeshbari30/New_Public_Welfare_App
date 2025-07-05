@@ -1,23 +1,24 @@
 abstract class Validators{
 
-  static  validateEmptyField(String? value){
-    if(value == "" || value == null){
+  static String? validateEmptyField(String? value) {
+    if (value == null || value.trim().isEmpty) {
       return "Mandatory field*";
-    }else{
-      return null;
     }
-
+    return null;
   }
 
 
-   static  validateMobileNumber(String? value){
-    if((value?.length ?? 0) > 10){
-      return "Incorrect Mobile Number...";
-    }else{
-      return null;
-    }
-
+   static String? validateMobileNumber(String? value) {
+  if (value == null || value.trim().isEmpty) {
+    return "Mobile number is required";
+  } else if (value.length != 10) {
+    return "Mobile number must be 10 digits";
+  } else if (!RegExp(r'^[0-9]{10}$').hasMatch(value)) {
+    return "Only digits allowed";
   }
+  return null;
+}
+
 
    static String? usernameOrEmailValidator(String? value) {
     if (value == null || value.isEmpty) {
