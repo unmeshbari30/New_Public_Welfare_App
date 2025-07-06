@@ -445,7 +445,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                           child: Container(
                             height: 280,
                             decoration: BoxDecoration(
-                              color: Colors.grey.shade300,
+                              color: Colors.grey.shade400,
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
@@ -514,9 +514,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                     )
                                   : Image.memory(
                                       imageBytes!,
-                                      fit: BoxFit.cover,
-                                      width: double.infinity,
-                                      height: double.infinity,
+                                      fit: BoxFit.fill,
                                     ),
                             ),
                           );

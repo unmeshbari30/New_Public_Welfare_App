@@ -103,7 +103,7 @@ Widget getScaffold(WomenEmpowermentState state) {
                         child: Container(
                           height: 250,
                           decoration: BoxDecoration(
-                            color: Colors.grey.shade300,
+                            color: Colors.grey.shade400,
                             borderRadius: BorderRadius.circular(15),
                           ),
                         ),
@@ -160,8 +160,8 @@ Widget getScaffold(WomenEmpowermentState state) {
                                     )
                                   : Image.memory(
                                       imageBytes!,
-                                      height: 200,
-                                      fit: BoxFit.cover,
+                                      // height: 200,
+                                      fit: BoxFit.fill,
                                     ),
                             ),
                             if(item?.description !=null || item?.description != "")

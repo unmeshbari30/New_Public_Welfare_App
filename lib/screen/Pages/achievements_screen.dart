@@ -75,7 +75,7 @@ class _AchievementsScreenState extends ConsumerState<AchievementsScreen> {
                           child: Container(
                             height: 250,
                             decoration: BoxDecoration(
-                              color: Colors.grey.shade300,
+                              color: Colors.grey.shade400,
                               borderRadius: BorderRadius.circular(15),
                             ),
                           ),
@@ -137,9 +137,9 @@ class _AchievementsScreenState extends ConsumerState<AchievementsScreen> {
                                       )
                                     : Image.memory(
                                         imageBytes!,
-                                        width: double.infinity,
-                                        height: 180,
-                                        fit: BoxFit.cover,
+                                        // width: double.infinity,
+                                        // height: 180,
+                                        fit: BoxFit.fill,
                                       ),
                               ),
                               if (description.isNotEmpty || description != "")

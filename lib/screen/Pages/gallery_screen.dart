@@ -43,7 +43,7 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> {
                           child: Container(
                             height: 250,
                             decoration: BoxDecoration(
-                              color: Colors.grey.shade300,
+                              color: Colors.grey.shade400,
                               borderRadius: BorderRadius.circular(15),
                             ),
                           ),
@@ -102,8 +102,8 @@ class _GalleryScreenState extends ConsumerState<GalleryScreen> {
                                       )
                                     : Image.memory(
                                         imageBytes!,
-                                        height: 200,
-                                        fit: BoxFit.cover,
+                                        // height: 200,
+                                        fit: BoxFit.fill,
                                       ),
                               ),
                               if (item?.description != null ||
