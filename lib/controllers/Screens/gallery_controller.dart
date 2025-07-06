@@ -11,7 +11,7 @@ class GalleryController extends _$GalleryController{
 FutureOr<GalleryState> build() async{
   GalleryState newState = GalleryState();
   var data = await ref.read(repositoryProvider.future);
-  newState.achievementsResponse = data.getGalleryData() ;
+  newState.galleryResponseData = data.getGalleryData() ;
   return newState;
 
 }
@@ -24,7 +24,7 @@ FutureOr<GalleryState> build() async{
 
 class GalleryState{
 
-  Future<FileResponseModel?>? achievementsResponse; 
+  Future<FileResponseModel?>? galleryResponseData;
 
    List<Map<String, String>> galleryItems = [
     {

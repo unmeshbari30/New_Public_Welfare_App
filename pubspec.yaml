@@ -86,3 +86,8 @@ flutter:
     - lib\assets\Icons\grievance_icon.jpeg
     - lib\assets\Icons\helpline_icon.jpeg
     - lib\assets\Icons\women_empowerment_icon.jpeg
+    - lib\assets\Icons\rajesh_dada_icon.png
+
+    # broken image
+    - lib\assets\Icons\broken_image.png
+    - lib\assets\Icons\office_illustration.jpg

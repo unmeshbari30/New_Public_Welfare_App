@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:rajesh_dada_padvi/controllers/authentication_controller.dart';
+import 'package:rajesh_dada_padvi/models/Files/files_response_model.dart';
 import 'package:rajesh_dada_padvi/models/complaint_payload_model.dart';
 import 'package:rajesh_dada_padvi/models/login_payload_model.dart';
 import 'package:rajesh_dada_padvi/repository/repository.dart';
@@ -18,6 +19,9 @@ class HomeController extends _$HomeController{
 FutureOr<HomeState> build() async{
   HomeState newState = HomeState();
   var data = await ref.read(authenticationControllerProvider.future);
+
+  var repository = await ref.read(repositoryProvider.future);
+  newState.homeDataResponse = repository.getHomePageData();
 
 
   newState.userName = data.userName.text;
@@ -87,6 +91,8 @@ Future<LoginPayloadModel?> adminSignIn() async {
 
 class HomeState{
 
+  Future<FileResponseModel?>? homeDataResponse; 
+
   TextEditingController adminUsernameController = TextEditingController();
   TextEditingController adminPasswordController = TextEditingController();
 
@@ -100,9 +106,7 @@ class HomeState{
   TextEditingController complaintMessageController = TextEditingController();
   TextEditingController locationController = TextEditingController();
   TextEditingController addressController = TextEditingController();
-
   TextEditingController yourMessageController = TextEditingController();
-
 
 
   //Dropdown Controllers
@@ -116,9 +120,6 @@ class HomeState{
       Future.value(["पुरुष / Male", "स्त्री / Female", "इतर / Unknown"]); 
   Future<List<String>> talukaList =
       Future.value(["तळोदा / Taloda", "शहादा / Shahada"]); //"Akkalkuva", "Dhagaon", "Navapur", "Nandurbar", 
-  
-
-
 
 
 }

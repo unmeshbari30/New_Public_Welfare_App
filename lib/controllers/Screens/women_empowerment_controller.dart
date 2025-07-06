@@ -11,7 +11,7 @@ class WomenEmpowermentController extends _$WomenEmpowermentController{
 FutureOr<WomenEmpowermentState> build() async{
   WomenEmpowermentState newState = WomenEmpowermentState();
   var data = await ref.read(repositoryProvider.future);
-  newState.achievementsResponse = data.getGalleryData() ;
+  newState.getWomenEmpowermentData = data.getWomenEmpowermentData() ;
   return newState;
 
 }
@@ -24,7 +24,7 @@ FutureOr<WomenEmpowermentState> build() async{
 
 class WomenEmpowermentState{
 
-  Future<FileResponseModel?>? achievementsResponse; 
+  Future<FileResponseModel?>? getWomenEmpowermentData; 
 
   List<Map<String, String>> galleryItems = [
     {
