@@ -22,8 +22,7 @@ FutureOr<HomeState> build() async{
 
   var repository = await ref.read(repositoryProvider.future);
   newState.homeDataResponse = repository.getHomePageData();
-
-
+  newState.certificateDataResponse = repository.getCertificateData();
   newState.userName = data.userName.text;
   newState.loginResult = data.loginResult;
   return newState;
@@ -92,6 +91,7 @@ Future<LoginPayloadModel?> adminSignIn() async {
 class HomeState{
 
   Future<FileResponseModel?>? homeDataResponse; 
+  Future<FileResponseModel?>? certificateDataResponse; 
 
   TextEditingController adminUsernameController = TextEditingController();
   TextEditingController adminPasswordController = TextEditingController();

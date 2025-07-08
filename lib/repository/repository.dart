@@ -397,6 +397,38 @@ Future<ComplaintPayloadModel?>? saveComplaint({
   Repository({
     required this.dio,
   });
+
+  Future<FileResponseModel?> getCertificateData() async {
+  try {
+    final response = await dio.get("/api/v1/certificate");
+
+    if (response.statusCode == 200) {
+      final data = response.data;
+      final result = FileResponseModel.fromJson(data);
+      return result;
+    } else {
+      print("Server responded with status: ${response.statusCode}");
+    }
+
+    if (response.statusCode == 400) {
+      final data = response.data;
+      final result = FileResponseModel.fromJson(data);
+      return result;
+    }
+
+  } on DioException catch (e) {
+    print("Dio error: ${e.message}");
+    if (e.response != null) {
+      print("Response data: ${e.response?.data}");
+      print("Status code: ${e.response?.statusCode}");
+    }
+  } catch (e) {
+    print("Unexpected error: $e");
+  }
+
+  // If everything fails, return null instead of throwing exception
+  return null;
+}
 }
 
 @riverpod
