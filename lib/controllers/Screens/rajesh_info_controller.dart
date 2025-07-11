@@ -5,26 +5,17 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part "rajesh_info_controller.g.dart";
 
 @riverpod
-class RajeshInfoController extends _$RajeshInfoController{
-
-@override
-FutureOr<RajeshInfoState> build() async{
-  RajeshInfoState newState = RajeshInfoState();
-  var repository = await  ref.read(repositoryProvider.future);
-  newState.mlaInfoModel = repository.getMlaInfo() ;
-  return newState;
-
+class RajeshInfoController extends _$RajeshInfoController {
+  @override
+  FutureOr<RajeshInfoState> build() async {
+    ref.keepAlive();
+    RajeshInfoState newState = RajeshInfoState();
+    var repository = await ref.read(repositoryProvider.future);
+    newState.mlaInfoModel = repository.getMlaInfo();
+    return newState;
+  }
 }
 
-
-
-
-
-}
-
-class RajeshInfoState{
-
+class RajeshInfoState {
   Future<MlaInfoModel?>? mlaInfoModel;
- 
-
 }

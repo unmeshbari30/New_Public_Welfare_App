@@ -130,22 +130,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     );
   }
 
-  // final List<String> imagePaths = [
-  //   "lib/assets/Gallery/birsa_munda.jpeg",
-  //   "lib/assets/Gallery/yahamogi_img.jpeg",
-  //   "lib/assets/Gallery/shivaji_maharaj_img.jpeg",
-  //   "lib/assets/Gallery/babasaheb_img.jpeg",
-  //   "lib/assets/Gallery/phule_img.jpeg",
-  //   "lib/assets/bhausaheb.jpeg",
-  //   "lib/assets/rajesh_dada_202.jpeg", // fadanvis
-  //   "lib/assets/rajesh_dada_201.jpeg", //ajit dada
-  //   "lib/assets/rajesh_dada_203.jpeg",
-  //   "lib/assets/Gallery/bavankule_img.jpeg",
-  //   "lib/assets/Gallery/kokate_img.jpeg",
-  //   "lib/assets/rajesh_dada_204.jpeg",
-  //   "lib/assets/rajesh_dada_205.jpeg",
-  // ];
-
   @override
   void initState() {
     super.initState();
@@ -156,24 +140,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         setState(() {});
       }
     });
-
-    // _pageController = PageController(initialPage: 0);
-
-    // _timer = Timer.periodic(Duration(seconds: 3), (Timer timer) {
-    //   if (_pageController != null && _pageController!.hasClients) {
-    //     if (_currentPage < imagePaths.length - 1) {
-    //       _currentPage++;
-    //     } else {
-    //       _currentPage = 0;
-    //     }
-
-    //     _pageController!.animateToPage(
-    //       _currentPage,
-    //       duration: Duration(milliseconds: 500),
-    //       curve: Curves.easeInOut,
-    //     );
-    //   }
-    // });
 
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => _showDisclaimerDialog(),
@@ -245,15 +211,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   Widget getScaffold(HomeState state) {
     return Stack(
       children: [
-        // Background image behind everything
-        // if (_tabController.index == 1 || _tabController.index == 2)
-        //   Positioned.fill(
-        //     child: Image.asset(
-        //       'lib/assets/bg_image.jpeg',
-        //       fit: BoxFit.cover,
-        //     ),
-        //   ),
-        // Main UI with transparent Scaffold
         Scaffold(
           appBar: AppBar(
             centerTitle: true,
@@ -391,107 +348,77 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     return Container(
       color: Colors.white,
       child: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              //Images
-              // Padding(
-              //   padding: const EdgeInsets.all(12.0),
-              //   child: SizedBox(
-              //     width: double.infinity,
-              //     height: 280,
-              //     child: PageView.builder(
-              //       controller: _pageController,
-              //       itemCount: imagePaths.length,
-              //       itemBuilder: (context, index) {
-              //         return Container(
-              //           decoration: BoxDecoration(
-              //             // border: Border.all(
-              //             //   color: Colors.black,
-              //             //   width: 2
-              //             // ),
-              //             // borderRadius: BorderRadius.circular(12)
-              //           ),
-              //           child: ClipRRect(
-              //             borderRadius: BorderRadius.circular(12),
-              //             child: Image.asset(
-              //               imagePaths[index],
-              //               fit: BoxFit.cover,
-              //               width: double.infinity,
-              //               height: double.infinity,
-              //             ),
-              //           ),
-              //         );
-              //       },
-              //       onPageChanged: (index) {
-              //         setState(() {
-              //           _currentPage = index;
-              //         });
-              //       },
-              //     ),
-              //   ),
-              // ),
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 280,
-                  child: FutureBuilder<FileResponseModel?>(
-                    future: state.homeDataResponse,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        // Shimmer for entire slider height
-                        return Shimmer(
-                          child: Container(
-                            height: 280,
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade400,
-                              borderRadius: BorderRadius.circular(12),
+        child: RefreshIndicator(
+          onRefresh: () async {
+            ref.refresh(homeControllerProvider);
+            await ref.read(homeControllerProvider.future);
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 280,
+                    child: FutureBuilder<FileResponseModel?>(
+                      future: state.homeDataResponse,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          // Shimmer for entire slider height
+                          return Shimmer(
+                            child: Container(
+                              height: 280,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade400,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
                             ),
-                          ),
-                        );
-                      }
+                          );
+                        }
 
-                      if (snapshot.hasError ||
-                          !snapshot.hasData ||
-                          snapshot.data == null) {
-                        return Center(child: Text("Failed to load images."));
-                      }
+                        if (snapshot.hasError ||
+                            !snapshot.hasData ||
+                            snapshot.data == null) {
+                          return Center(child: Text("Failed to load images."));
+                        }
 
-                      final imageItems = snapshot.data!.files;
+                        final imageItems = snapshot.data!.files;
 
-                      if (_pageController == null) {
-                        _pageController = PageController(initialPage: 0);
-                        _timer?.cancel(); 
+                        if (_pageController == null) {
+                          _pageController = PageController(initialPage: 0);
+                          _timer?.cancel();
 
-                        _timer = Timer.periodic(Duration(seconds: 3), (
-                          Timer timer,
-                        ) {
-                          if (_pageController!.hasClients) {
-                            if (_currentPage < imageItems!.length - 1) {
-                              _currentPage++;
-                            } else {
-                              _currentPage = 0;
+                          _timer = Timer.periodic(Duration(seconds: 3), (
+                            Timer timer,
+                          ) {
+                            if (_pageController!.hasClients) {
+                              if (_currentPage < imageItems!.length - 1) {
+                                _currentPage++;
+                              } else {
+                                _currentPage = 0;
+                              }
+
+                              _pageController!.animateToPage(
+                                _currentPage,
+                                duration: Duration(milliseconds: 500),
+                                curve: Curves.easeInOut,
+                              );
                             }
+                          });
+                        }
 
-                            _pageController!.animateToPage(
-                              _currentPage,
-                              duration: Duration(milliseconds: 500),
-                              curve: Curves.easeInOut,
-                            );
-                          }
-                        });
-                      }
+                        return PageView.builder(
+                          controller: _pageController,
+                          itemCount: imageItems?.length,
+                          itemBuilder: (context, index) {
+                            final base64String = imageItems?[index].base64Data;
+                            Uint8List? imageBytes;
+                            bool useFallbackImage = false;
 
-                      return PageView.builder(
-                        controller: _pageController,
-                        itemCount: imageItems?.length,
-                        itemBuilder: (context, index) {
-                          final base64String = imageItems?[index].base64Data;
-                          Uint8List? imageBytes;
-                          bool useFallbackImage = false;
-
-                          if (base64String == null || base64String.trim().isEmpty) {
+                            if (base64String == null ||
+                                base64String.trim().isEmpty) {
                               useFallbackImage = true;
                             } else {
                               try {
@@ -501,199 +428,168 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                               }
                             }
 
-                          return Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 4),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: useFallbackImage
-                                  ? Image.asset(
-                                      "lib/assets/Icons/broken_image.png",
-                                      fit: BoxFit.cover,
-                                      width: double.infinity,
-                                      height: double.infinity,
-                                    )
-                                  : Image.memory(
-                                      imageBytes!,
-                                      fit: BoxFit.fill,
-                                    ),
-                            ),
-                          );
-                        },
-                        onPageChanged: (index) {
-                          setState(() {
-                            _currentPage = index;
-                          });
-                        },
-                      );
-                    },
+                            return Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 4),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: useFallbackImage
+                                    ? Image.asset(
+                                        "lib/assets/Icons/broken_image.png",
+                                        fit: BoxFit.cover,
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                      )
+                                    : Image.memory(
+                                        imageBytes!,
+                                        fit: BoxFit.fill,
+                                      ),
+                              ),
+                            );
+                          },
+                          onPageChanged: (index) {
+                            setState(() {
+                              _currentPage = index;
+                            });
+                          },
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
-
-              const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
-                child: Card(
-                  elevation: 1.5,
-                  color: Colors.white,
-                  child: GridView.count(
-                    crossAxisCount: 3,
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    mainAxisSpacing: 0,
-                    crossAxisSpacing: 0,
-                    childAspectRatio: 0.8,
-                    children: [
-                      buildGridIcon(
-                        "lib/assets/Icons/rajesh_dada_icon.png",
-                        "राजेश दादा",
-                        () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => RajeshDadaInfoScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                      buildGridIcon(
-                        "lib/assets/Icons/grievance_icon.jpeg",
-                        "तक्रार / विनंती",
-                        () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => GrievanceScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                      buildGridIcon(
-                        "lib/assets/Icons/achievements_icon.jpeg",
-                        "कामगिरी",
-                        () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AchievementsScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                      buildGridIcon(
-                        "lib/assets/Icons/helpline_icon.jpeg",
-                        "हेल्पलाईन",
-                        () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HelplineScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                      buildGridIcon(
-                        "lib/assets/Icons/gallery_icon.jpeg",
-                        "गॅलरी ",
-                        () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => GalleryScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                      buildGridIcon(
-                        "lib/assets/Icons/women_empowerment_icon.jpeg",
-                        "महिला सशक्तीकरण",
-                        () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => WomenEmpowermentScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
+                  child: Card(
+                    elevation: 1.5,
+                    color: Colors.white,
+                    child: GridView.count(
+                      crossAxisCount: 3,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      mainAxisSpacing: 0,
+                      crossAxisSpacing: 0,
+                      childAspectRatio: 0.8,
+                      children: [
+                        buildGridIcon(
+                          "lib/assets/Icons/rajesh_dada_icon.png",
+                          "राजेश दादा",
+                          () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RajeshDadaInfoScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                        buildGridIcon(
+                          "lib/assets/Icons/grievance_icon.jpeg",
+                          "तक्रार / विनंती",
+                          () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => GrievanceScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                        buildGridIcon(
+                          "lib/assets/Icons/achievements_icon.jpeg",
+                          "कामगिरी",
+                          () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AchievementsScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                        buildGridIcon(
+                          "lib/assets/Icons/helpline_icon.jpeg",
+                          "हेल्पलाईन",
+                          () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HelplineScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                        buildGridIcon(
+                          "lib/assets/Icons/gallery_icon.jpeg",
+                          "गॅलरी ",
+                          () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => GalleryScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                        buildGridIcon(
+                          "lib/assets/Icons/women_empowerment_icon.jpeg",
+                          "महिला सशक्तीकरण",
+                          () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => WomenEmpowermentScreen(),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: const FaIcon(
-                      FontAwesomeIcons.facebook,
-                      color: Colors.blue,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: const FaIcon(
+                        FontAwesomeIcons.facebook,
+                        color: Colors.blue,
+                      ),
+                      onPressed: () => launchURL(
+                        "https://www.facebook.com/mlarajesh.padvi.3?mibextid=rS40aB7S9Ucbxw6v",
+                      ),
+                      iconSize: 36,
                     ),
-                    onPressed: () => launchURL(
-                      "https://www.facebook.com/mlarajesh.padvi.3?mibextid=rS40aB7S9Ucbxw6v",
+                    SizedBox(width: 10),
+                    IconButton(
+                      icon: const FaIcon(
+                        FontAwesomeIcons.xTwitter,
+                        color: Colors.black,
+                      ),
+                      onPressed: () => launchURL(
+                        "https://x.com/MlaPadvi?t=sr656VMprkJ5qXyXIBpyvw&s=09",
+                      ),
+                      iconSize: 36,
                     ),
-                    iconSize: 36,
-                  ),
-                  SizedBox(width: 10),
-                  IconButton(
-                    icon: const FaIcon(
-                      FontAwesomeIcons.xTwitter,
-                      color: Colors.black,
+                    SizedBox(width: 10),
+                    IconButton(
+                      icon: const FaIcon(
+                        FontAwesomeIcons.instagram,
+                        color: Colors.purple,
+                      ),
+                      onPressed: () => launchURL(
+                        "https://www.instagram.com/rajeshpadvi001/",
+                      ),
+                      iconSize: 36,
                     ),
-                    onPressed: () => launchURL(
-                      "https://x.com/MlaPadvi?t=sr656VMprkJ5qXyXIBpyvw&s=09",
-                    ),
-                    iconSize: 36,
-                  ),
-                  SizedBox(width: 10),
-                  IconButton(
-                    icon: const FaIcon(
-                      FontAwesomeIcons.instagram,
-                      color: Colors.purple,
-                    ),
-                    onPressed: () =>
-                        launchURL("https://www.instagram.com/rajeshpadvi001/"),
-                    iconSize: 36,
-                  ),
-                ],
-              ),
+                  ],
+                ),
 
-              SizedBox(height: 30),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildGridIcon(String assetPath, String label, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        // mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(2, 6, 2, 6),
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.amber, width: 2),
-              ),
-              padding: EdgeInsets.fromLTRB(2, 6, 2, 6),
-              child: CircleAvatar(
-                radius: 25,
-                backgroundColor: Colors.white,
-                backgroundImage: AssetImage(assetPath),
-              ),
+                SizedBox(height: 30),
+              ],
             ),
           ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-            textAlign: TextAlign.center,
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -721,7 +617,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
               onPressed: () {
                 Navigator.push(
                   context,
-                  // MaterialPageRoute(builder: (context) => CertificateScreen(),));
                   MaterialPageRoute(builder: (context) => CertificateScreen()),
                 );
               },
@@ -746,8 +641,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     profileRow("Name", "$firstName $lastName"),
-                    // const Divider(),
-                    // profileRow("Phone", "${state.loginResult?.}"),
                     const Divider(),
                     profileRow("Taluka", "$taluka"),
                     const Divider(),
@@ -764,22 +657,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget profileRow(String title, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(title, style: const TextStyle(fontSize: 16)),
-          Text(
-            value,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-        ],
       ),
     );
   }
@@ -841,6 +718,54 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                 ),
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildGridIcon(String assetPath, String label, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        // mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(2, 6, 2, 6),
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.amber, width: 2),
+              ),
+              padding: EdgeInsets.fromLTRB(2, 6, 2, 6),
+              child: CircleAvatar(
+                radius: 25,
+                backgroundColor: Colors.white,
+                backgroundImage: AssetImage(assetPath),
+              ),
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget profileRow(String title, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(title, style: const TextStyle(fontSize: 16)),
+          Text(
+            value,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
         ],
       ),

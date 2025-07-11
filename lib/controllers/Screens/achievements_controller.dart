@@ -5,25 +5,17 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part "achievements_controller.g.dart";
 
 @riverpod
-class AchievementsController extends _$AchievementsController{
-
-@override
-FutureOr<AchievementsState> build() async{
-  AchievementsState newState = AchievementsState();
-  var data = await ref.read(repositoryProvider.future);
-  newState.achievementsResponse = data.getAchievements() ;
-  return newState;
-
+class AchievementsController extends _$AchievementsController {
+  @override
+  FutureOr<AchievementsState> build() async {
+    ref.keepAlive();
+    AchievementsState newState = AchievementsState();
+    var data = await ref.read(repositoryProvider.future);
+    newState.achievementsResponse = data.getAchievements();
+    return newState;
+  }
 }
 
-
-
-
-
-}
-
-class AchievementsState{
-
-  Future<FileResponseModel?>? achievementsResponse; 
-
+class AchievementsState {
+  Future<FileResponseModel?>? achievementsResponse;
 }

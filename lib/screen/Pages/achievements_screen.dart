@@ -57,54 +57,60 @@ class _AchievementsScreenState extends ConsumerState<AchievementsScreen> {
         backgroundColor: Colors.amber,
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              FutureBuilder<FileResponseModel?>(
-                future: state.achievementsResponse,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.all(8),
-                      itemCount: 3,
-                      itemBuilder: (_, __) => Padding(
-                        padding: const EdgeInsets.only(bottom: 12.0),
-                        child: Shimmer(
-                          child: Container(
-                            height: 250,
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade400,
-                              borderRadius: BorderRadius.circular(15),
+        child: RefreshIndicator(
+          onRefresh: () async {
+            ref.refresh(achievementsControllerProvider);
+            await ref.read(achievementsControllerProvider.future);
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                FutureBuilder<FileResponseModel?>(
+                  future: state.achievementsResponse,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.all(8),
+                        itemCount: 3,
+                        itemBuilder: (_, __) => Padding(
+                          padding: const EdgeInsets.only(bottom: 12.0),
+                          child: Shimmer(
+                            child: Container(
+                              height: 250,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade400,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  }
-              
-                  if (snapshot.hasError ||
-                      !snapshot.hasData ||
-                      snapshot.data == null) {
-                    return const Center(child: Text("No data Found"));
-                  }
-              
-                  final files = snapshot.data!.files;
-              
-                  return ListView.builder(
-                    padding: const EdgeInsets.all(8),
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: files?.length,
-                    itemBuilder: (context, index) {
-                      final file = files?[index];
-                      final base64String = file?.base64Data;
-                      final description = file?.description ?? "";
-                      Uint8List? imageBytes;
-                      bool useFallbackImage = false;
-              
-                      if (base64String == null || base64String.trim().isEmpty) {
+                      );
+                    }
+
+                    if (snapshot.hasError ||
+                        !snapshot.hasData ||
+                        snapshot.data == null) {
+                      return const Center(child: Text("No data Found"));
+                    }
+
+                    final files = snapshot.data!.files;
+
+                    return ListView.builder(
+                      padding: const EdgeInsets.all(8),
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: files?.length,
+                      itemBuilder: (context, index) {
+                        final file = files?[index];
+                        final base64String = file?.base64Data;
+                        final description = file?.description ?? "";
+                        Uint8List? imageBytes;
+                        bool useFallbackImage = false;
+
+                        if (base64String == null ||
+                            base64String.trim().isEmpty) {
                           useFallbackImage = true;
                         } else {
                           try {
@@ -113,53 +119,59 @@ class _AchievementsScreenState extends ConsumerState<AchievementsScreen> {
                             useFallbackImage = true;
                           }
                         }
-              
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 12.0),
-                        child: Card(
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              ClipRRect(
-                                borderRadius: const BorderRadius.vertical(
-                                  top: Radius.circular(15),
-                                ),
-                                child: useFallbackImage
-                                    ? Image.asset(
-                                        "lib/assets/Icons/broken_image.png",
-                                        width: double.infinity,
-                                        height: 180,
-                                        fit: BoxFit.cover,
-                                      )
-                                    : Image.memory(
-                                        imageBytes!,
-                                        // width: double.infinity,
-                                        // height: 180,
-                                        fit: BoxFit.fill,
-                                      ),
-                              ),
-                              if (description.isNotEmpty || description != "")
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
-                                  child: Text(
-                                    description,
-                                    textAlign: TextAlign.justify,
-                                    style: const TextStyle(fontSize: 16),
+
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 12.0),
+                          child: Card(
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: const BorderRadius.vertical(
+                                    top: Radius.circular(15),
                                   ),
+                                  child: useFallbackImage
+                                      ? Image.asset(
+                                          "lib/assets/Icons/broken_image.png",
+                                          width: double.infinity,
+                                          height: 180,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Image.memory(
+                                          imageBytes!,
+                                          // width: double.infinity,
+                                          // height: 180,
+                                          fit: BoxFit.fill,
+                                        ),
                                 ),
-                            ],
+                                if (description.isNotEmpty || description != "")
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                      12,
+                                      8,
+                                      12,
+                                      12,
+                                    ),
+                                    child: Text(
+                                      description,
+                                      textAlign: TextAlign.justify,
+                                      style: const TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ],
+                        );
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
