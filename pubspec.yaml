@@ -64,7 +64,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "lib/assets/App Logos/final_app_logo.jpeg"
+  image_path: "lib/assets/App Logos/app_icon.jpeg"
 
 # The following section is specific to Flutter packages.
 flutter:
@@ -74,6 +74,7 @@ flutter:
   assets:
       # App logo
     - lib\assets\App Logos\final_app_logo.jpeg
+    - lib\assets\App Logos\app_icon.jpeg
 
     # certificate photo
     - lib\assets\Certificates\certificate_img.jpeg

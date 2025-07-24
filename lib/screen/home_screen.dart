@@ -141,9 +141,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       }
     });
 
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) => _showDisclaimerDialog(),
-    );
+    // WidgetsBinding.instance.addPostFrameCallback(
+    //   (_) => _showDisclaimerDialog(),
+    // );
 
     _loadPreferences();
   }
