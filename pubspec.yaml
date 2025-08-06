@@ -4,7 +4,7 @@ description: "A new Flutter project."
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+1
+version: 1.0.0+3 # already changed no need to change now
 
 environment:
   sdk: ^3.8.1
@@ -64,7 +64,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "lib/assets/App Logos/app_icon.jpeg"
+  image_path: "lib/assets/App Logos/final_app_logo.jpeg"
 
 # The following section is specific to Flutter packages.
 flutter:
