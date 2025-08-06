@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:mime/mime.dart';
 import 'package:rajesh_dada_padvi/models/Files/files_response_model.dart';
+import 'package:rajesh_dada_padvi/models/Files/mla_info_model.dart';
 import 'package:rajesh_dada_padvi/models/complaint_payload_model.dart';
 import 'package:rajesh_dada_padvi/models/complaint_response_model.dart';
 import 'package:rajesh_dada_padvi/models/login_payload_model.dart';
@@ -188,7 +189,6 @@ Future<ComplaintPayloadModel?>? saveComplaint({
   //     return null;
   //   }
   // }
-
   
   Future<ComplaintResponseModel> getComplaints() async {
     try {
@@ -251,7 +251,6 @@ Future<ComplaintPayloadModel?>? saveComplaint({
   // If everything fails, return null instead of throwing exception
   return null;
 }
-
 
   Future<FileResponseModel?> getGalleryData() async {
   try {
@@ -349,10 +348,87 @@ Future<ComplaintPayloadModel?>? saveComplaint({
   return null;
 }
   
+  Future<MlaInfoModel?> getMlaInfo() async {
+  try {
+    final response = await dio.get("/api/v1/mla-info");
+
+    if (response.statusCode == 200) {
+      final data = response.data;
+      final result = MlaInfoModel.fromJson(data);
+      return result;
+    } else {
+      print("Server responded with status: ${response.statusCode}");
+    }
+
+    if (response.statusCode == 400) {
+      final data = response.data;
+      final result = MlaInfoModel.fromJson(data);
+      return result;
+    }
+
+  } on DioException catch (e) {
+    print("Dio error: ${e.message}");
+    if (e.response != null) {
+      print("Response data: ${e.response?.data}");
+      print("Status code: ${e.response?.statusCode}");
+    }
+  } catch (e) {
+    print("Unexpected error: $e");
+  }
+
+  // If everything fails, return null instead of throwing exception
+  return null;
+}
   
+  Future<bool> deleteComplaintById(String id) async{
+    try{
+      
+      final response = await dio.delete("/api/v1/Complaints/$id");
+      if(response.statusCode == 200){
+      return true;
+      }
+      return false;
+
+    }catch(e){
+      return false;
+    }
+  }
+
   Repository({
     required this.dio,
   });
+
+  Future<FileResponseModel?> getCertificateData() async {
+  try {
+    final response = await dio.get("/api/v1/certificate");
+
+    if (response.statusCode == 200) {
+      final data = response.data;
+      final result = FileResponseModel.fromJson(data);
+      return result;
+    } else {
+      print("Server responded with status: ${response.statusCode}");
+    }
+
+    if (response.statusCode == 400) {
+      final data = response.data;
+      final result = FileResponseModel.fromJson(data);
+      return result;
+    }
+
+  } on DioException catch (e) {
+    print("Dio error: ${e.message}");
+    if (e.response != null) {
+      print("Response data: ${e.response?.data}");
+      print("Status code: ${e.response?.statusCode}");
+    }
+  } catch (e) {
+    print("Unexpected error: $e");
+  }
+
+  // If everything fails, return null instead of throwing exception
+  return null;
+}
 }
 
 @riverpod

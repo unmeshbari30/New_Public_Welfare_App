@@ -13,10 +13,7 @@ class SignUpScreen extends ConsumerStatefulWidget {
   ConsumerState<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-
-
 class _SignUpScreenState extends ConsumerState<SignUpScreen> {
-  
   @override
   void dispose() {
     final state = ref.read(authenticationControllerProvider).value;
@@ -33,389 +30,227 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     super.dispose();
   }
 
-
   var formKey = GlobalKey<FormState>();
 
-  // Widget getScaffold(AuthenticationState state) {
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       title: Text("Register",
-  //           style: TextStyle(color: Theme.of(context).secondaryHeaderColor)),
-  //       centerTitle: true,
-  //       backgroundColor: Colors.black,
-  //       iconTheme: IconThemeData(color: Colors.white),
-  //     ),
-  //     backgroundColor: Colors.black,
-  //     body: SafeArea(
-  //       child: SingleChildScrollView(
-  //         child: Form(
-  //           autovalidateMode: AutovalidateMode.onUserInteraction,
-  //           key: formKey,
-  //           child: Column(
-  //             children: [
-  //               SizedBox(
-  //                 height: 10,
-  //               ),
-  //               Padding(
-  //                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-  //                 child: CustomFilledTextField(
-  //                   controller: state.firstNameController,
-  //                   labelText: "पहिले नाव / First Name *",
-  //                   validator: (value) {
-  //                   return Validators.validateEmptyField(value);
-  //                   }
-  //                 ),
-  //               ),
-  //               SizedBox(
-  //                 height: 10,
-  //               ),
-  //               Padding(
-  //                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-  //                 child: CustomFilledTextField(
-  //                   controller: state.middleNameController,
-  //                   labelText: "मधले नाव / Middle Name",
-  //                 ),
-  //               ),
-  //               SizedBox(
-  //                 height: 10,
-  //               ),
-  //               Padding(
-  //                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-  //                 child: CustomFilledTextField(
-  //                   controller: state.lastNameController,
-  //                   labelText: "आडनाव / Last Name *",
-  //                   validator: (value) {
-  //                     return Validators.validateEmptyField(value);                     
-  //                   },
-  //                 ),
-  //               ),
-  //               Row(
-  //                 children: [
-  //                   Expanded(
-  //                     child: Padding(
-  //                       padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
-  //                       child: FutureFilledDropdown(
-  //                           items: state.gendersList,
-  //                           controller: state.gendersController,
-  //                           labelText: "लिंग / Gender *",
-  //                           titleBuilder: (item) => item,
-  //                           validator: (value) {
-  //                             return Validators.validateEmptyField(value);
-  //                           },
-  //                           ),
-  //                     ),
-  //                   ),
-  //                   Expanded(
-  //                     child: Padding(
-  //                       padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-  //                       child: FutureFilledDropdown(
-  //                         items: state.tehsilList,
-  //                         controller: state.tehsilController,
-  //                         labelText: "तालुका  / Taluka *",
-  //                         titleBuilder: (item) => item,
-  //                         validator: (value) {
-  //                           return Validators.validateEmptyField(value);
-  //                         },
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //               Row(
-  //                 children: [
-  //                   Expanded(
-  //                     child: Padding(
-  //                       padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
-  //                       child: CustomFilledTextField(
-  //                       controller: state.ageController,
-  //                       labelText: "वय / Age *",
-  //                       keyboardType: TextInputType.number,
-  //                       validator: (value) {
-  //                     return Validators.validateEmptyField(value);                   
-  //                   },
-  //                 ),
-  //                     ),
-  //                   ),
-  //                   Expanded(
-  //                     child: Padding(
-  //                       padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-  //                       child: FutureFilledDropdown(
-  //                         items: state.bloodGroup,
-  //                         controller: state.bloodGroupController,
-  //                         labelText: "रक्त गट / Blood Group *",
-  //                         titleBuilder: (item) => item,
-  //                         validator: (value) {
-  //                           return Validators.validateEmptyField(value);
-  //                         },
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //               Padding(
-  //                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-  //                 child: CustomFilledTextField(
-  //                   controller: state.emailController,
-  //                   labelText: "ईमेल / Email",
-  //                 ),
-  //               ),
-  //               Padding(
-  //                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-  //                 child: CustomFilledTextField(
-  //                   controller: state.whatsappNumberController,
-  //                   labelText: "व्हाट्सअँप नं. / Whatsapp No.",
-  //                   validator: (value) {
-  //                     return Validators.validateMobileNumber(value);                  
-  //                   },
-  //                 ),
-  //               ),
-  //               Padding(
-  //                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-  //                 child: CustomFilledTextField(
-  //                   controller: state.mobileNumberController,
-  //                   labelText: "मो. नंबर / Mobile Number*",
-  //                   validator: (value) {
-  //                     return Validators.validateMobileNumber(value);                 
-  //                   },
-  //                 ),
-  //               ),
-  //               Padding(
-  //                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-  //                 child: CustomFilledTextField(
-  //                   controller: state.passwordController,
-  //                   labelText: "पासवर्ड तयार करा / Create Password *",
-  //                   validator: (value) {
-  //                     return Validators.validateEmptyField(value);                    
-  //                   },
-  //                 ),
-  //               ),
-  //               Padding(
-  //                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-  //                 child: ElevatedButton(
-  //                     onPressed: () async{
-  //                       if (formKey.currentState!.validate()) {
-  //                         try{
-  //                           EasyLoading.show();
-  //                           var successful = await ref.read(authenticationControllerProvider.notifier).userRegistration();
-  //                           if(successful?.isRegistered == true){
-  //                             ScaffoldMessenger.of(context).showSnackBar(
-  //                               SnackBar(
-  //                                 content: Text(
-  //                                   successful?.message ?? "",
-  //                                   style: TextStyle(color: Colors.black),
-  //                                 ),
-  //                                 duration: Duration(seconds: 2),
-  //                                 backgroundColor: Colors.green.shade600,
-  //                               ),
-  //                             );
-  //                             Navigator.pop(context);
-  //                           }else{
-  //                             ScaffoldMessenger.of(context).showSnackBar(
-  //                               SnackBar(
-  //                                 content: Text(
-  //                                  successful?.message ?? "Something went wrong",
-  //                                   style: TextStyle(color: Colors.black),
-  //                                 ),
-  //                                 duration: Duration(seconds: 2),
-  //                                 backgroundColor: Colors.red.shade600,
-  //                               ),
-  //                             );
-  //                           }
-  //                         }catch(e){
-  //                            ScaffoldMessenger.of(context).showSnackBar(
-  //                               SnackBar(
-  //                                 content: Text(
-  //                                 "Something went wrong",
-  //                                   style: TextStyle(color: Colors.black),
-  //                                 ),
-  //                                 duration: Duration(seconds: 2),
-  //                                 backgroundColor: Colors.red.shade600,
-  //                               ),
-  //                             );                            
-  //                         }finally{
-  //                           EasyLoading.dismiss();                          
-  //                         }
-  //                       }
-  //                     },
-  //                     child: Text("रजिस्टर / Register")),
-  //               )
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  
   Widget getScaffold(AuthenticationState state) {
-  return Scaffold(
-    backgroundColor: const Color(0xFFF1F5F9), // Light bluish background
-    appBar: AppBar(
-      title: const Text("Register", style: TextStyle(color: Colors.white)),
-      centerTitle: true,
-      backgroundColor: Colors.deepPurple,
-      iconTheme: const IconThemeData(color: Colors.white),
-    ),
-    body: SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          key: formKey,
-          child: Card(
-            elevation: 10,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const Text(
-                    "Create an Account",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.deepPurple,
+    return Scaffold(
+      backgroundColor: const Color(0xFFF1F5F9), // Light bluish background
+      appBar: AppBar(
+        title: const Text("Register", style: TextStyle(color: Colors.black)),
+        centerTitle: true,
+        backgroundColor: Colors.amber,
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(8),
+          child: Form(
+            // autovalidateMode: AutovalidateMode.onUserInteraction,
+            key: formKey,
+            child: Card(
+              elevation: 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Text(
+                      "Create an Account",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  CustomFilledTextField(
-                    controller: state.firstNameController,
-                    labelText: "पहिले नाव / First Name *",
-                    validator: Validators.validateEmptyField,
-                  ),
-                  CustomFilledTextField(
-                    controller: state.middleNameController,
-                    labelText: "मधले नाव / Middle Name",
-                  ),
-                  CustomFilledTextField(
-                    controller: state.lastNameController,
-                    labelText: "आडनाव / Last Name *",
-                    validator: Validators.validateEmptyField,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: FutureFilledDropdown(
-                          items: state.gendersList,
-                          controller: state.gendersController,
-                          labelText: "लिंग / Gender *",
-                          titleBuilder: (item) => item,
-                          validator: Validators.validateEmptyField,
-                        ),
+                    const SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      child: CustomFilledTextField(
+                        controller: state.firstNameController,
+                        labelText: "पहिले नाव / First Name *",
+                        validator: Validators.validateEmptyField,
                       ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: FutureFilledDropdown(
-                          items: state.tehsilList,
-                          controller: state.tehsilController,
-                          labelText: "तालुका / Taluka *",
-                          titleBuilder: (item) => item,
-                          validator: Validators.validateEmptyField,
-                        ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      child: CustomFilledTextField(
+                        controller: state.middleNameController,
+                        labelText: "मधले नाव / Middle Name",
                       ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomFilledTextField(
-                          controller: state.ageController,
-                          labelText: "वय / Age *",
-                          keyboardType: TextInputType.number,
-                          validator: Validators.validateEmptyField,
-                        ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      child: CustomFilledTextField(
+                        controller: state.lastNameController,
+                        labelText: "आडनाव / Last Name *",
+                        validator: Validators.validateEmptyField,
                       ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: FutureFilledDropdown(
-                          items: state.bloodGroup,
-                          controller: state.bloodGroupController,
-                          labelText: "रक्त गट / Blood Group *",
-                          titleBuilder: (item) => item,
-                          validator: Validators.validateEmptyField,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
+                            child: FutureFilledDropdown(
+                              items: state.gendersList,
+                              controller: state.gendersController,
+                              labelText: "लिंग / Gender *",
+                              titleBuilder: (item) => item,
+                              validator: Validators.validateEmptyField,
+                            ),
+                          ),
                         ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                            child: FutureFilledDropdown(
+                              items: state.tehsilList,
+                              controller: state.tehsilController,
+                              labelText: "तालुका / Taluka *",
+                              titleBuilder: (item) => item,
+                              validator: Validators.validateEmptyField,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
+                            child: CustomFilledTextField(
+                              controller: state.ageController,
+                              labelText: "वय / Age *",
+                              keyboardType: TextInputType.number,
+                              validator: Validators.validateEmptyField,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                            child: FutureFilledDropdown(
+                              items: state.bloodGroup,
+                              controller: state.bloodGroupController,
+                              labelText: "रक्त गट / Blood Group *",
+                              titleBuilder: (item) => item,
+                              validator: Validators.validateEmptyField,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      child: CustomFilledTextField(
+                        controller: state.emailController,
+                        labelText: "ईमेल / Email",
                       ),
-                    ],
-                  ),
-                  CustomFilledTextField(
-                    controller: state.emailController,
-                    labelText: "ईमेल / Email",
-                  ),
-                  CustomFilledTextField(
-                    controller: state.whatsappNumberController,
-                    labelText: "व्हाट्सअँप नं. / Whatsapp No.",
-                    validator: Validators.validateMobileNumber,
-                  ),
-                  CustomFilledTextField(
-                    controller: state.mobileNumberController,
-                    labelText: "मो. नंबर / Mobile Number*",
-                    validator: Validators.validateMobileNumber,
-                  ),
-                  CustomFilledTextField(
-                    controller: state.passwordController,
-                    labelText: "पासवर्ड तयार करा / Create Password *",
-                    validator: Validators.validateEmptyField,
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () async {
-                      if (formKey.currentState!.validate()) {
-                        try {
-                          EasyLoading.show();
-                          var successful = await ref.read(authenticationControllerProvider.notifier).userRegistration();
-                          if (successful?.isRegistered == true) {
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      child: CustomFilledTextField(
+                        controller: state.whatsappNumberController,
+                        labelText: "व्हाट्सअँप नं. / Whatsapp No.",
+                        validator: Validators.validateMobileNumber,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      child: CustomFilledTextField(
+                        controller: state.mobileNumberController,
+                        labelText: "मो. नंबर / Mobile Number*",
+                        validator: Validators.validateMobileNumber,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      child: CustomFilledTextField(
+                        controller: state.passwordController,
+                        labelText: "पासवर्ड तयार करा / Create Password *",
+                        validator: Validators.validateEmptyField,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () async { 
+                        if (formKey.currentState!.validate()) {
+                          try {
+                            EasyLoading.show();
+                            var successful = await ref
+                                .read(authenticationControllerProvider.notifier)
+                                .userRegistration();
+                            if (successful?.isRegistered == true) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    successful?.message ?? "",
+                                    style: const TextStyle(color: Colors.black),
+                                  ),
+                                  duration: const Duration(seconds: 2),
+                                  backgroundColor: Colors.green.shade600,
+                                ),
+                              );
+                              Navigator.pop(context);
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    successful?.message ??
+                                        "Something went wrong",
+                                    style: const TextStyle(color: Colors.black),
+                                  ),
+                                  duration: const Duration(seconds: 2),
+                                  backgroundColor: Colors.red.shade600,
+                                ),
+                              );
+                            }
+                          } catch (e) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(successful?.message ?? "", style: const TextStyle(color: Colors.black)),
-                                duration: const Duration(seconds: 2),
-                                backgroundColor: Colors.green.shade600,
-                              ),
-                            );
-                            Navigator.pop(context);
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(successful?.message ?? "Something went wrong", style: const TextStyle(color: Colors.black)),
+                                content: const Text(
+                                  "Something went wrong",
+                                  style: TextStyle(color: Colors.black),
+                                ),
                                 duration: const Duration(seconds: 2),
                                 backgroundColor: Colors.red.shade600,
                               ),
                             );
+                          } finally {
+                            EasyLoading.dismiss();
                           }
-                        } catch (e) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: const Text("Something went wrong", style: TextStyle(color: Colors.black)),
-                              duration: const Duration(seconds: 2),
-                              backgroundColor: Colors.red.shade600,
-                            ),
-                          );
-                        } finally {
-                          EasyLoading.dismiss();
                         }
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.amber,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        textStyle: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: const Text("रजिस्टर / Register", style: TextStyle(color: Colors.black),),
                     ),
-                    child: const Text("रजिस्टर / Register"),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
         ),
       ),
-    ),
-  );
-}
-
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
